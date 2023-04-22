@@ -1,4 +1,4 @@
-const cardSchema = require('../models/card')
+const cardSchema = require('../models/card');
 
 const getCards = (req, res) => {
     cardSchema.find()
@@ -7,9 +7,9 @@ const getCards = (req, res) => {
             res.send({ data: card });
         })
         .catch((e) => {
-            res.status(500).send({ message: 'что-то пошло не так' })
+            res.status(500).send({ message: 'что-то пошло не так' });
         })
-}
+};
 
 const createCard = (req, res) => {
     const { name, link } = req.body;
@@ -20,13 +20,13 @@ const createCard = (req, res) => {
             res.status(201).send({ card });
         }).catch(e => {
             if (e.message === 'ValidationError') {
-                const message = Object.values(e.errors).map(error => error.message).join(';')
+                const message = Object.values(e.errors).map(error => error.message).join(';');
                 res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
             } else {
                 res.status(500).send({ message: 'Что-то пошло не так' });
             }
         })
-}
+};
 
 const deleteCard = (req, res) => {
     cardSchema.findByIdAndRemove(req.params.cardId)
@@ -38,12 +38,12 @@ const deleteCard = (req, res) => {
         })
         .catch((e) => {
             if (e.message === 'не найдено') {
-                res.status(404).send({ error: 'Карточка с указанным _id не найдена' })
+                res.status(404).send({ error: 'Карточка с указанным _id не найдена' });
             } else {
-                res.status(500).send({ message: 'что-то пошло не так' })
+                res.status(500).send({ message: 'что-то пошло не так' });
             }
         })
-}
+};
 
 const setLike = (req, res) => {
     cardSchema.findByIdAndUpdate(
@@ -52,19 +52,19 @@ const setLike = (req, res) => {
         { new: true },
     )
         .orFail(() => {
-            throw new Error('не найдено')
+            throw new Error('не найдено');
         })
         .then((card) => {
-            res.send({ data: card })
+            res.send({ data: card });
         })
         .catch((e) => {
             if (e.message === 'не найдено') {
-                res.status(404).send({ error: 'Передан несуществующий _id карточки' })
+                res.status(404).send({ error: 'Передан несуществующий _id карточки' });
             } else {
-                res.status(500).send({ message: 'что-то пошло не так' })
+                res.status(500).send({ message: 'что-то пошло не так' });
             }
         })
-}
+};
 
 const deleteLike = (req, res) => {
     cardSchema.findByIdAndUpdate(
@@ -73,16 +73,16 @@ const deleteLike = (req, res) => {
         { new: true },
     )
         .orFail(() => {
-            throw new Error('не найдено')
+            throw new Error('не найдено');
         })
         .then((card) => {
-            res.send({ data: card })
+            res.send({ data: card });
         })
         .catch((e) => {
             if (e.message === 'не найдено') {
-                res.status(404).send({ error: 'Передан несуществующий _id карточки' })
+                res.status(404).send({ error: 'Передан несуществующий _id карточки' });
             } else {
-                res.status(500).send({ message: 'что-то пошло не так' })
+                res.status(500).send({ message: 'что-то пошло не так' });
             }
         })
 }
