@@ -28,13 +28,12 @@ const getUser = (req, res) => {
 };
 
 const createUser = (req, res) => {
-    console.log(req.body);
     const { name, about, avatar } = req.body;
     userSchema.create({ name, about, avatar })
         .then(user => {
             res.status(201).send({ data: user });
         }).catch(e => {
-            if (e.message === 'ValidationError') {
+            if (e.name === 'ValidationError') {
                 const message = Object.values(e.errors).map(error => error.message).join(';');
                 res.status(400).send({ message });
             } else {
