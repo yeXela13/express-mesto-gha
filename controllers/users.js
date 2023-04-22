@@ -2,7 +2,7 @@ const userSchema = require('../models/user');
 
 const getUsers = (req, res) => {
   userSchema.find().then((user) => {
-    res.send({ data: user });
+    res.status(200).send({ data: user });
   })
     .catch(() => {
       res.status(500).send({ message: 'что-то пошло не так' });
@@ -16,7 +16,7 @@ const getUser = (req, res) => {
       throw new Error('не найдено');
     })
     .then((user) => {
-      res.send({ data: user });
+      res.status(200).send({ data: user });
     })
     .catch((e) => {
       if (e.message === 'не найдено') {
@@ -50,7 +50,7 @@ const updateUser = (req, res) => {
     { new: true, upsert: true },
   )
     .then((user) => {
-      res.send({ data: user });
+      res.status(200).send({ data: user });
     })
     .catch((e) => {
       if (e.message === 'не найдено') {
@@ -74,7 +74,7 @@ const updateAvatar = (req, res) => {
       throw new Error('не найдено');
     })
     .then((user) => {
-      res.send({ data: user });
+      res.status(200).send({ data: user });
     })
     .catch((e) => {
       if (e.message === 'не найдено') {

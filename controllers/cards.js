@@ -4,7 +4,7 @@ const getCards = (req, res) => {
   cardSchema.find()
     .populate(['owner', 'likes'])
     .then((card) => {
-      res.send({ data: card });
+      res.status(200).send({ data: card });
     })
     .catch(() => {
       res.status(500).send({ message: 'что-то пошло не так' });
@@ -33,7 +33,7 @@ const deleteCard = (req, res) => {
       throw new Error('не найдено');
     })
     .then((card) => {
-      res.send({ card });
+      res.status(200).send({ card });
     })
     .catch((e) => {
       if (e.message === 'не найдено') {
@@ -54,7 +54,7 @@ const setLike = (req, res) => {
       throw new Error('не найдено');
     })
     .then((card) => {
-      res.send({ data: card });
+      res.status(200).send({ data: card });
     })
     .catch((e) => {
       if (e.message === 'не найдено') {
@@ -75,7 +75,7 @@ const deleteLike = (req, res) => {
       throw new Error('не найдено');
     })
     .then((card) => {
-      res.send({ data: card });
+      res.status(200).send({ data: card });
     })
     .catch((e) => {
       if (e.message === 'не найдено') {
