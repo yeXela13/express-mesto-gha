@@ -19,8 +19,8 @@ const getUser = (req, res) => {
     .then((user) => {
       res.send({ user });
     })
-    .catch(() => {
-      if (!id) {
+    .catch((e) => {
+      if (e.name === 'не найдено') {
         res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
       } else {
         res.status(500).send({ message: 'что-то пошло не так' });
@@ -54,10 +54,11 @@ const updateUser = (req, res) => {
       res.status(200).send({ data: user });
     })
     .catch((e) => {
+      if (e) {
+        res.status(400).send({ error: 'Переданы некорректные данные при обновлении профиля' });
+      }
       if (e.message === 'не найдено') {
         res.status(404).send({ error: 'Запрашиваемый пользователь не найден' });
-      } else if (e) {
-        res.status(400).send({ error: 'Переданы некорректные данные при обновлении профиля' });
       } else {
         res.status(500).send({ message: 'что-то пошло не так' });
       }
@@ -78,10 +79,11 @@ const updateAvatar = (req, res) => {
       res.status(200).send({ data: user });
     })
     .catch((e) => {
+      if (e) {
+        res.status(400).send({ error: 'Переданы некорректные данные при обновлении профиля' });
+      }
       if (e.message === 'не найдено') {
         res.status(404).send({ error: 'Запрашиваемый пользователь не найден' });
-      } else if (e) {
-        res.status(400).send({ error: 'Переданы некорректные данные при обновлении профиля' });
       } else {
         res.status(500).send({ message: 'что-то пошло не так' });
       }
