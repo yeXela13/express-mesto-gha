@@ -1,9 +1,10 @@
 const userSchema = require('../models/user');
 
 const getUsers = (req, res) => {
-  userSchema.find().then((user) => {
-    res.status(200).send({ data: user });
-  })
+  userSchema.find()
+    .then((user) => {
+      res.send({ user });
+    })
     .catch(() => {
       res.status(500).send({ message: 'что-то пошло не так' });
     });
@@ -16,11 +17,11 @@ const getUser = (req, res) => {
       throw new Error('не найдено');
     })
     .then((user) => {
-      res.status(200).send({ data: user });
+      res.send({ user });
     })
-    .catch((e) => {
-      if (e.message === 'не найдено') {
-        res.status(404).send({ error: 'Запрашиваемый пользователь не найден' });
+    .catch(() => {
+      if (!id) {
+        res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
       } else {
         res.status(500).send({ message: 'что-то пошло не так' });
       }
