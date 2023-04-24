@@ -1,12 +1,13 @@
 const userSchema = require('../models/user');
+const { handleError } = require('../handles/handleError');
 
 const getUsers = (req, res) => {
   userSchema.find()
     .then((user) => {
-      res.send({ user });
+      res.send({ data: user });
     })
-    .catch(() => {
-      res.status(500).send({ message: 'что-то пошло не так' });
+    .catch((err) => {
+      handleError(err, res);
     });
 };
 
@@ -17,14 +18,10 @@ const getUser = (req, res) => {
       throw new Error('не найдено');
     })
     .then((user) => {
-      res.send({ user });
+      res.send({ data: user });
     })
-    .catch((e) => {
-      if (e.name === 'не найдено') {
-        res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
-      } else {
-        res.status(500).send({ message: 'что-то пошло не так' });
-      }
+    .catch((err) => {
+      handleError(err, res);
     });
 };
 
@@ -33,13 +30,8 @@ const createUser = (req, res) => {
   userSchema.create({ name, about, avatar })
     .then((user) => {
       res.status(201).send({ data: user });
-    }).catch((e) => {
-      const message = Object.values(e.errors).map((error) => error.message).join(';');
-      if (e.name === 'ValidationError') {
-        res.status(400).send({ message });
-      } else {
-        res.status(500).send({ message });
-      }
+    }).catch((err) => {
+      handleError(err, res);
     });
 };
 
@@ -48,20 +40,13 @@ const updateUser = (req, res) => {
   userSchema.findByIdAndUpdate(
     id,
     { name: req.name, about: req.about },
-    { new: true, upsert: true },
+    { new: true },
   )
     .then((user) => {
       res.status(200).send({ data: user });
     })
-    .catch((e) => {
-      if (e) {
-        res.status(400).send({ error: 'Переданы некорректные данные при обновлении профиля' });
-      }
-      if (e.message === 'не найдено') {
-        res.status(404).send({ error: 'Запрашиваемый пользователь не найден' });
-      } else {
-        res.status(500).send({ message: 'что-то пошло не так' });
-      }
+    .catch((err) => {
+      handleError(err, res);
     });
 };
 
@@ -70,7 +55,7 @@ const updateAvatar = (req, res) => {
   userSchema.findByIdAndUpdate(
     id,
     { avatar: req.body.avatar },
-    { new: true, upsert: true },
+    { new: true },
   )
     .orFail(() => {
       throw new Error('не найдено');
@@ -78,15 +63,8 @@ const updateAvatar = (req, res) => {
     .then((user) => {
       res.status(200).send({ data: user });
     })
-    .catch((e) => {
-      if (e) {
-        res.status(400).send({ error: 'Переданы некорректные данные при обновлении профиля' });
-      }
-      if (e.message === 'не найдено') {
-        res.status(404).send({ error: 'Запрашиваемый пользователь не найден' });
-      } else {
-        res.status(500).send({ message: 'что-то пошло не так' });
-      }
+    .catch((err) => {
+      handleError(err, res);
     });
 };
 
