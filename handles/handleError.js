@@ -1,4 +1,4 @@
-const { ValidationError, DocumentNotFoundError, CastError } = require('mongoose').Error;
+const { DocumentNotFoundError, CastError, ValidationError } = require('mongoose').Error;
 
 const handleError = (err, res) => {
   if (err instanceof ValidationError) {

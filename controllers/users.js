@@ -1,5 +1,5 @@
 const userSchema = require('../models/user');
-const { handleError } = require('../handles/handleError');
+const handleError = require('../handles/handleError');
 
 const getUsers = (req, res) => {
   userSchema.find()
