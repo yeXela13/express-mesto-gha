@@ -14,9 +14,7 @@ const getUsers = (req, res) => {
 const getUser = (req, res) => {
   const { id } = req.params;
   userSchema.findById(id)
-    .orFail(() => {
-      throw new Error('не найдено');
-    })
+    .orFail()
     .then((user) => {
       res.send({ data: user });
     })
@@ -40,7 +38,7 @@ const updateUser = (req, res) => {
   userSchema.findByIdAndUpdate(
     id,
     { name: req.name, about: req.about },
-    { new: true },
+    { new: true, runValidators: true },
   )
     .then((user) => {
       res.status(200).send({ data: user });
@@ -55,7 +53,7 @@ const updateAvatar = (req, res) => {
   userSchema.findByIdAndUpdate(
     id,
     { avatar: req.body.avatar },
-    { new: true },
+    { new: true, runValidators: true },
   )
     .orFail(() => {
       throw new Error('не найдено');

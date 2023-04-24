@@ -26,9 +26,7 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   cardSchema.findByIdAndRemove(req.params.cardId)
-    .orFail(() => {
-      throw new Error('не найдено');
-    })
+    .orFail()
     .then((card) => {
       res.status(200).send({ data: card });
     })
@@ -43,9 +41,7 @@ const setLike = (req, res) => {
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
   )
-    .orFail(() => {
-      throw new Error('не найдено');
-    })
+    .orFail()
     .then((card) => {
       res.status(200).send({ data: card });
     })
@@ -60,9 +56,7 @@ const deleteLike = (req, res) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
-    .orFail(() => {
-      throw new Error('не найдено');
-    })
+    .orFail()
     .then((card) => {
       res.status(200).send({ data: card });
     })
