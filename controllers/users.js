@@ -12,8 +12,8 @@ const getUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  const { id } = req.params;
-  userSchema.findById(id)
+  // const { id } = req.params;
+  userSchema.findById(req.params.userId)
     .orFail()
     .then((user) => {
       res.send({ data: user });
