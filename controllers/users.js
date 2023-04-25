@@ -4,7 +4,7 @@ const handleError = require('../handles/handleError');
 const getUsers = (req, res) => {
   userSchema.find()
     .then((user) => {
-      res.send({ data: user });
+      res.send({ user });
     })
     .catch((err) => {
       handleError(err, res);
