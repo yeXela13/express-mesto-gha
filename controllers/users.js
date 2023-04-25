@@ -27,9 +27,9 @@ const createUser = (req, res) => {
     }).catch((err) => {
       if (err.name === 'ValidationError') {
         const message = Object.values(err.errors).map((error) => error.message).join(';');
-        res.status(400).send({ message });
+        res.status(http2.HTTP_STATUS_BAD_REQUEST).send({ message });
       } else {
-        res.status(500).send({ message: 'Что-то пошло не так' });
+        res.status(http2.HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Что-то пошло не так' });
       }
     });
 };

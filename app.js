@@ -1,4 +1,5 @@
 const express = require('express');
+const http2 = require('http2').constants;
 const mongoose = require('mongoose');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
@@ -24,7 +25,7 @@ app.use(userRouter);
 app.use(cardRouter);
 
 app.use('*', (req, res) => {
-  res.status(404).send({ message: 'страница не найдена' });
+  res.status(http2.HTTP_STATUS_NOT_FOUND).send({ message: 'страница не найдена' });
 });
 
 const { PORT = 3000 } = process.env;
