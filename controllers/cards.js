@@ -1,3 +1,4 @@
+const http2 = require('http2').constants;
 const cardSchema = require('../models/card');
 const handleError = require('../handles/handleError');
 
@@ -5,7 +6,7 @@ const getCards = (req, res) => {
   cardSchema.find()
     .populate(['owner', 'likes'])
     .then((cards) => {
-      res.send({ cards });
+      res.status(http2.HTTP_STATUS_OK).send({ cards });
     })
     .catch((err) => {
       handleError(err, res);
@@ -20,7 +21,7 @@ const createCard = (req, res) => {
       card.populate('owner');
     })
     .then((card) => {
-      res.status(201).send({ data: card });
+      res.status(http2.HTTP_STATUS_CREATED).send({ data: card });
     }).catch((err) => {
       handleError(err, res);
     });
@@ -30,7 +31,7 @@ const deleteCard = (req, res) => {
   cardSchema.findByIdAndRemove(req.params.cardId)
     .orFail()
     .then((card) => {
-      res.status(200).send({ data: card });
+      res.status(http2.HTTP_STATUS_OK).send({ data: card });
     })
     .catch((err) => {
       handleError(err, res);
@@ -45,7 +46,7 @@ const setLike = (req, res) => {
   )
     .orFail()
     .then((card) => {
-      res.status(200).send({ data: card });
+      res.status(http2.HTTP_STATUS_OK).send({ data: card });
     })
     .catch((err) => {
       handleError(err, res);
@@ -60,7 +61,7 @@ const deleteLike = (req, res) => {
   )
     .orFail()
     .then((card) => {
-      res.status(200).send({ data: card });
+      res.status(http2.HTTP_STATUS_OK).send({ data: card });
     })
     .catch((err) => {
       handleError(err, res);

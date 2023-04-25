@@ -23,7 +23,7 @@ const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   userSchema.create({ name, about, avatar })
     .then((user) => {
-      res.status(http2.HTTP_STATUS_OK).send({ data: user });
+      res.status(http2.HTTP_STATUS_CREATED).send({ data: user });
     }).catch((err) => {
       if (err.name === 'ValidationError') {
         const message = Object.values(err.errors).map((error) => error.message).join(';');
