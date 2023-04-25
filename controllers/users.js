@@ -15,7 +15,7 @@ const getUser = (req, res) => {
   userSchema.findById(req.params.userId)
     .orFail()
     .then((user) => {
-      res.send({ data: user });
+      res.send({ user });
     })
     .catch((err) => {
       handleError(err, res);
@@ -32,12 +32,7 @@ const createUser = (req, res) => {
     .then((user) => {
       res.status(201).send({ data: user });
     }).catch((err) => {
-      // handleError(err, res);
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
-      } else {
-        res.status(500).send({ message: 'Что-то пошло не так' });
-      }
+      handleError(err, res);
     });
 };
 
