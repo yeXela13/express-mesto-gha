@@ -13,7 +13,9 @@ const getUsers = (req, res) => {
 
 const getUser = (req, res) => {
   userSchema.findById(req.params.userId)
-    .orFail()
+    .orFail(() => {
+      throw new Error('Not Found');
+    })
     .then((user) => {
       res.send({ user });
     })
