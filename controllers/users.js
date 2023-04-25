@@ -22,19 +22,15 @@ const getUser = (req, res) => {
     });
 };
 
-// eslint-disable-next-line consistent-return
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  if (!name) {
-    return res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
-  }
   userSchema.create({ name, about, avatar })
     .then((user) => {
       res.status(201).send({ data: user });
     }).catch((err) => {
-      handleError(err, res);
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+        const message = Object.values(err.errors).map((error) => error.message).join(';');
+        res.status(400).send({ message });
       } else {
         res.status(500).send({ message: 'Что-то пошло не так' });
       }
