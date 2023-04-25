@@ -1,20 +1,20 @@
 const userSchema = require('../models/user');
-const { handleError } = require('../handles/handleError');
+const handleError = require('../handles/handleError');
 
 const getUsers = (req, res) => {
   userSchema.find()
     .then((user) => {
       res.send({ user });
     })
-    .catch((err) => handleError(err, res));
+    .catch((err) => {
+      handleError(err, res);
+    });
 };
 
 const getUser = (req, res) => {
   userSchema.findById(req.params.userId)
     .orFail()
-    .then((user) => {
-      res.send(user);
-    })
+    .then((user) => res.send(user))
     .catch((err) => handleError(err, res));
 };
 
@@ -43,7 +43,9 @@ const updateUser = (req, res) => {
     .then((user) => {
       res.status(200).send({ data: user });
     })
-    .catch((err) => handleError(err, res));
+    .catch((err) => {
+      handleError(err, res);
+    });
 };
 
 const updateAvatar = (req, res) => {
@@ -59,7 +61,9 @@ const updateAvatar = (req, res) => {
     .then((user) => {
       res.status(200).send({ data: user });
     })
-    .catch((err) => handleError(err, res));
+    .catch((err) => {
+      handleError(err, res);
+    });
 };
 
 module.exports = {
