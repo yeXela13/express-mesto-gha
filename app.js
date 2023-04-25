@@ -1,8 +1,7 @@
 const express = require('express');
 const http2 = require('http2').constants;
 const mongoose = require('mongoose');
-const userRouter = require('./routes/users');
-const cardRouter = require('./routes/cards');
+const { userRouter, cardRouter } = require('./routes');
 
 const mongooseUrl = 'mongodb://localhost:27017/mestodb';
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb')
