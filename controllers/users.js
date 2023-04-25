@@ -12,15 +12,19 @@ const getUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  userSchema.findById(req.params.userId)
-    .orFail(() => {
-      throw new Error('Not Found');
-    })
+  const { Id } = req.params;
+  userSchema.findById(Id)
+    .orFail()
     .then((user) => {
-      res.send({ user });
+      if (user) {
+        res.send({ user });
+      } else {
+        res.status(404).send({ message: 'пользователь не найден' });
+      }
     })
     .catch((err) => {
-      handleError(err, res);
+      // handleError(err, res);
+      console.log('err =>', err);
     });
 };
 
