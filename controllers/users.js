@@ -1,5 +1,5 @@
 const userSchema = require('../models/user');
-const handleError = require('../handles/handleError');
+const { handleError } = require('../handles/handleError');
 
 const getUsers = (req, res) => {
   userSchema.find()
@@ -12,19 +12,13 @@ const getUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  const { Id } = req.params;
-  userSchema.findById(Id)
+  userSchema.findById(req.params.userId)
     .orFail()
     .then((user) => {
-      if (user) {
-        res.send({ user });
-      } else {
-        res.status(404).send({ message: 'пользователь не найден' });
-      }
+      res.send(user);
     })
     .catch((err) => {
-      // handleError(err, res);
-      console.log('err =>', err);
+      handleError(err, res);
     });
 };
 
