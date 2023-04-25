@@ -12,7 +12,6 @@ const getUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  // const { id } = req.params;
   userSchema.findById(req.params.userId)
     .orFail()
     .then((user) => {
@@ -34,7 +33,7 @@ const createUser = (req, res) => {
 };
 
 const updateUser = (req, res) => {
-  const { id } = req.params;
+  const id = req.user._id;
   userSchema.findByIdAndUpdate(
     id,
     { name: req.name, about: req.about },
@@ -49,7 +48,7 @@ const updateUser = (req, res) => {
 };
 
 const updateAvatar = (req, res) => {
-  const { id } = req.params;
+  const id = req.user._id;
   userSchema.findByIdAndUpdate(
     id,
     { avatar: req.body.avatar },
