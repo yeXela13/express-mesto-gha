@@ -23,6 +23,10 @@ app.use((req, res, next) => {
 app.use(userRouter);
 app.use(cardRouter);
 
+app.use('*', (req, res) => {
+  res.status(404).send({ message: 'страница не найдена' });
+});
+
 const { PORT = 3000 } = process.env;
 
 app.listen((PORT), () => {
