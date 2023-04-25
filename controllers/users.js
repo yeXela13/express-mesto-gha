@@ -6,9 +6,7 @@ const getUsers = (req, res) => {
     .then((user) => {
       res.send({ user });
     })
-    .catch((err) => {
-      handleError(err, res);
-    });
+    .catch((err) => handleError(err, res));
 };
 
 const getUser = (req, res) => {
@@ -17,9 +15,7 @@ const getUser = (req, res) => {
     .then((user) => {
       res.send(user);
     })
-    .catch((err) => {
-      handleError(err, res);
-    });
+    .catch((err) => handleError(err, res));
 };
 
 const createUser = (req, res) => {
@@ -47,9 +43,7 @@ const updateUser = (req, res) => {
     .then((user) => {
       res.status(200).send({ data: user });
     })
-    .catch((err) => {
-      handleError(err, res);
-    });
+    .catch((err) => handleError(err, res));
 };
 
 const updateAvatar = (req, res) => {
@@ -65,9 +59,7 @@ const updateAvatar = (req, res) => {
     .then((user) => {
       res.status(200).send({ data: user });
     })
-    .catch((err) => {
-      handleError(err, res);
-    });
+    .catch((err) => handleError(err, res));
 };
 
 module.exports = {

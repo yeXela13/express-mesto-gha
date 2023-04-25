@@ -1,5 +1,5 @@
 const cardSchema = require('../models/card');
-const handleError = require('../handles/handleError');
+const { handleError } = require('../handles/handleError');
 
 const getCards = (req, res) => {
   cardSchema.find()
@@ -7,9 +7,7 @@ const getCards = (req, res) => {
     .then((cards) => {
       res.send({ cards });
     })
-    .catch((err) => {
-      handleError(err, res);
-    });
+    .catch((err) => handleError(err, res));
 };
 
 const createCard = (req, res) => {
@@ -21,9 +19,8 @@ const createCard = (req, res) => {
     })
     .then((card) => {
       res.status(201).send({ data: card });
-    }).catch((err) => {
-      handleError(err, res);
-    });
+    })
+    .catch((err) => handleError(err, res));
 };
 
 const deleteCard = (req, res) => {
@@ -32,9 +29,7 @@ const deleteCard = (req, res) => {
     .then((card) => {
       res.status(200).send({ data: card });
     })
-    .catch((err) => {
-      handleError(err, res);
-    });
+    .catch((err) => handleError(err, res));
 };
 
 const setLike = (req, res) => {
@@ -47,9 +42,7 @@ const setLike = (req, res) => {
     .then((card) => {
       res.status(200).send({ data: card });
     })
-    .catch((err) => {
-      handleError(err, res);
-    });
+    .catch((err) => handleError(err, res));
 };
 
 const deleteLike = (req, res) => {
@@ -62,9 +55,7 @@ const deleteLike = (req, res) => {
     .then((card) => {
       res.status(200).send({ data: card });
     })
-    .catch((err) => {
-      handleError(err, res);
-    });
+    .catch((err) => handleError(err, res));
 };
 
 module.exports = {
