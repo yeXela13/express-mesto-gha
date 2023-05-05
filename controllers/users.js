@@ -2,7 +2,7 @@ const http2 = require('http2').constants;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userSchema = require('../models/user');
-const handleError = require('../handles/handleError');
+const { handleError } = require('../handles/handleError');
 
 const getUsers = (req, res) => {
   userSchema.find()
@@ -21,7 +21,7 @@ const getUser = (req, res) => {
     .catch((err) => handleError(err, res));
 };
 
-const getUserInfo = (req, res) => {
+const getUserMyInfo = (req, res) => {
   userSchema.findById(req.params.userId)
     .orFail()
     .then((user) => res.status(http2.HTTP_STATUS_OK).send(user))
@@ -86,8 +86,8 @@ const updateAvatar = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body;
-  return userSchema.findUserByCredentials(email, password)
-  // userSchema.findOne({ email })
+  return userSchema.findUserByCredentials(email).select('+password')
+  // userSchema.findOne({ email }).select('+password')
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'super-secret-key', { expiresIn: '7d' });
       res.send({ token });
@@ -111,7 +111,7 @@ const login = (req, res) => {
 module.exports = {
   getUsers,
   getUser,
-  getUserInfo,
+  getUserMyInfo,
   createUser,
   updateUser,
   updateAvatar,
