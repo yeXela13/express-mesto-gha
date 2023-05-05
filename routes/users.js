@@ -1,12 +1,17 @@
 const userRouter = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+Joi.objectId = require('joi-objectid')(Joi);
 const {
   getUsers, getUser, updateUser, updateAvatar, getUserMyInfo,
 } = require('../controllers/users');
 
 userRouter.get('/users/', getUsers);
 
-userRouter.get('/users/:userId', getUser);
+userRouter.get('/users/:userId', celebrate({
+  params: Joi.object().keys({
+    userdId: Joi.objectId().required(),
+  }),
+}), getUser);
 
 userRouter.get('/users/me', getUserMyInfo);
 
