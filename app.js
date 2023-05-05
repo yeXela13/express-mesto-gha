@@ -5,7 +5,7 @@ const { errors } = require('celebrate');
 const { userRouter, cardRouter } = require('./routes');
 const { createUser, login } = require('./controllers/users');
 // const handleError = require('./handles/handleError');
-// const auth = require('./middlewares/auth');
+const auth = require('./middlewares/auth');
 
 const mongooseUrl = 'mongodb://localhost:27017/mestodb';
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb')
@@ -21,8 +21,8 @@ app.use(express.json());
 
 app.post('/signin', login);
 app.post('/signup', createUser);
-app.use(userRouter);
-app.use(cardRouter);
+app.use(auth, userRouter);
+app.use(auth, cardRouter);
 
 app.use('*', (req, res) => {
   res.status(http2.HTTP_STATUS_NOT_FOUND).send({ message: 'страница не найдена' });
