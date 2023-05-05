@@ -2,8 +2,10 @@ const userRouter = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
 const {
-  getUsers, getUser, updateUser, updateAvatar, getUserMyInfo,
+  getUsers, getUser, updateUser, updateAvatar, getUserMyInfo, createUser,
 } = require('../controllers/users');
+
+const regex = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/im;
 
 userRouter.get('/users/', getUsers);
 
@@ -15,7 +17,15 @@ userRouter.get('/users/:userId', celebrate({
 
 userRouter.get('/users/me', getUserMyInfo);
 
-// userRouter.post('/users/', createUser);
+userRouter.post('/users/', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().regex(regex),
+    email: Joi.string().required().email,
+    password: Joi.string().required(),
+  }),
+}), createUser);
 
 userRouter.patch('/users/me', celebrate({
   body: Joi.object().keys({

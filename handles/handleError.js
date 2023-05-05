@@ -1,7 +1,28 @@
 const http2 = require('http2').constants;
-const { DocumentNotFoundError, CastError, ValidationError } = require('mongoose').Error;
+const {
+  DocumentNotFoundError, CastError, ValidationError,
+} = require('mongoose').Error;
+const { ForbiddenError } = require('./ForbiddenError');
+const { UnauthorizedError } = require('./UnauthorizedError');
+const { NotFoundError } = require('./NotFoundError');
 
 const handleError = (err, res) => {
+  if (err.code === 11000) {
+    return res
+      .status(http2.HTTP_STATUS_CONFLICT).send({ message: 'Пользователь уже существует' });
+  }
+  if (err instanceof UnauthorizedError) {
+    const message = err;
+    return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message });
+  }
+  if (err instanceof ForbiddenError) {
+    const message = err;
+    return res.status(http2.HTTP_STATUS_FORBIDDEN).send({ message });
+  }
+  if (err instanceof NotFoundError) {
+    const message = err;
+    return res.status(http2.HTTP_STATUS_NOT_FOUND).send({ message });
+  }
   if (err instanceof ValidationError) {
     const message = Object.values(err.errors).map((error) => error.message).join(';');
     return res.status(http2.HTTP_STATUS_BAD_REQUEST).send({

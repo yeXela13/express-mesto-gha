@@ -86,7 +86,7 @@ const updateAvatar = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body;
-  return userSchema.findUserByCredentials(email).select('+password')
+  return userSchema.findUserByCredentials(email, password)
   // userSchema.findOne({ email }).select('+password')
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'super-secret-key', { expiresIn: '7d' });
