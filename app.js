@@ -37,7 +37,7 @@ app.use((err, req, res, next) => {
       : message,
   });
 });
-app.use(errors);
+app.use(errors());
 
 const { PORT = 3000 } = process.env;
 
