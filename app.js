@@ -2,6 +2,7 @@ const express = require('express');
 const http2 = require('http2').constants;
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const validationErrors = require('celebrate').errors;
 const { userRouter, cardRouter } = require('./routes');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -29,14 +30,15 @@ app.use('*', (req, res) => {
 
 // здесь обрабатываем все ошибки
 // eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({
-    message: statusCode === 500
-      ? 'На сервере произошла ошибка'
-      : message,
-  });
-});
+// app.use((err, req, res, next) => {
+//   const { statusCode = 500, message } = err;
+//   res.status(statusCode).send({
+//     message: statusCode === 500
+//       ? 'На сервере произошла ошибка'
+//       : message,
+//   });
+// });
+app.use(validationErrors());
 app.use(errors);
 
 const { PORT = 3000 } = process.env;

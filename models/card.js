@@ -1,15 +1,20 @@
 const mongoose = require('mongoose');
+const { RegExp } = require('../utils/regex');
 
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+    required: [true, 'Заполните это поле'],
+    minlength: [2, 'Поле должно содержать более 2 символов'],
+    maxlength: [30, 'Поле должно содержать более 2 символов'],
   },
   link: {
     type: String,
-    required: true,
+    required: [true, 'Заполните это поле'],
+    validate: {
+      validator: (link) => RegExp.test(link),
+      message: 'Некоректная адрес изображения',
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

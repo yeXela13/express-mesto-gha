@@ -7,18 +7,21 @@ const { RegExp } = require('../utils/regex');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
+    required: [true, 'Заполните это поле'],
+    minlength: [2, 'Поле должно содержать более 2 символов'],
+    maxlength: [30, 'Поле должно содержать более 2 символов'],
     default: 'Жак-Ив Кусто',
-    minlength: 2,
-    maxlength: 30,
   },
   about: {
     type: String,
+    required: [true, 'Заполните это поле'],
+    minlength: [2, 'Поле должно содержать более 2 символов'],
+    maxlength: [30, 'Поле должно содержать более 2 символов'],
     default: 'Исследователь',
-    minlength: 2,
-    maxlength: 30,
   },
   avatar: {
     type: String,
+    required: [true, 'Заполните это поле'],
     validate: {
       validator: (avatar) => RegExp.test(avatar),
       message: 'Некоректная адрес изображения',
@@ -27,7 +30,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Заполните это поле'],
     unique: true,
     validate: {
       validator: (email) => isEmail(email),
@@ -36,7 +39,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Заполните это поле'],
     select: false,
   },
 });
