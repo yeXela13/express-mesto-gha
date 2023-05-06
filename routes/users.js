@@ -4,8 +4,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 const {
   getUsers, getUser, updateUser, updateAvatar, getUserMyInfo, createUser,
 } = require('../controllers/users');
-
-const regex = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/im;
+const { RegExp } = require('../utils/regex');
 
 userRouter.get('/users/', getUsers);
 
@@ -21,7 +20,7 @@ userRouter.post('/users/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(regex),
+    avatar: Joi.string().regex(RegExp),
     email: Joi.string().required().email,
     password: Joi.string().required(),
   }),
@@ -36,7 +35,7 @@ userRouter.patch('/users/me', celebrate({
 
 userRouter.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required(),
+    avatar: Joi.string().required().regex(RegExp),
   }),
 }), updateAvatar);
 
