@@ -28,6 +28,7 @@ app.use('*', (req, res) => {
 });
 
 // здесь обрабатываем все ошибки
+app.use(errors());
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
@@ -37,7 +38,6 @@ app.use((err, req, res, next) => {
       : message,
   });
 });
-app.use(errors());
 
 const { PORT = 3000 } = process.env;
 
