@@ -2,6 +2,7 @@ const express = require('express');
 const http2 = require('http2').constants;
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const validationErrors = require('celebrate').errors;
 const { handleError } = require('./handles/handleError');
 const {
   userRouter, cardRouter, signinRout, signupRout,
@@ -30,8 +31,8 @@ app.use('*', (req, res) => {
 });
 
 // здесь обрабатываем все ошибки
+app.use(validationErrors());
 app.use(errors);
-app.use(handleError);
 // eslint-disable-next-line no-unused-vars
 // app.use((err, req, res, next) => {
 //   const { statusCode = 500, message } = err;
