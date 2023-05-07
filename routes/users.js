@@ -16,15 +16,7 @@ userRouter.get('/users/:userId', celebrate({
 
 userRouter.get('/users/me', getUserMyInfo);
 
-userRouter.post('/users/', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(RegExp),
-    email: Joi.string().required().email,
-    password: Joi.string().required(),
-  }),
-}), createUser);
+userRouter.post('/users/', createUser); // !!!!!!!!!!!!
 
 userRouter.patch('/users/me', celebrate({
   body: Joi.object().keys({

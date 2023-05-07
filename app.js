@@ -1,7 +1,9 @@
 const express = require('express');
 const http2 = require('http2').constants;
 const mongoose = require('mongoose');
-const { errors } = require('celebrate');
+const { errors, celebrate, Joi } = require('celebrate');
+const { RegExp } = require('./utils/regex');
+const { handleError } = require('./handles/handleError');
 const { userRouter, cardRouter } = require('./routes');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -18,8 +20,21 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email,
+    password: Joi.string().required(),
+  }),
+}), login);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().regex(RegExp),
+    email: Joi.string().required().email,
+    password: Joi.string().required(),
+  }),
+}), createUser);
 app.use(auth, userRouter);
 app.use(auth, cardRouter);
 
@@ -28,7 +43,8 @@ app.use('*', (req, res) => {
 });
 
 // здесь обрабатываем все ошибки
-app.use(errors());
+app.use(errors);
+app.use(handleError);
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
