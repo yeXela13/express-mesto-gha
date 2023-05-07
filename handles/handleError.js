@@ -6,11 +6,7 @@ const { ForbiddenError } = require('./ForbiddenError');
 const { UnauthorizedError } = require('./UnauthorizedError');
 const { NotFoundError } = require('./NotFoundError');
 
-const handleError = (err, res) => {
-  if (err.code === 11000) {
-    return res
-      .status(http2.HTTP_STATUS_CONFLICT).send({ message: 'Пользователь уже существует' });
-  }
+const handleError = ((err, req, res, next) => {
   if (err instanceof UnauthorizedError) {
     const message = err;
     return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message });
@@ -39,10 +35,11 @@ const handleError = (err, res) => {
       message: `Передан несуществующий _id: ${err.value}`,
     });
   }
-  return res.status(http2.HTTP_STATUS_INTERNAL_SERVER_ERROR).send({
+  res.status(http2.HTTP_STATUS_INTERNAL_SERVER_ERROR).send({
     message: `Что-то пошло не так ${err.name}: ${err.message}`,
   });
-};
+  return next();
+});
 
 module.exports = {
   handleError,

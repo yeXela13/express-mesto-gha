@@ -1,11 +1,11 @@
 const express = require('express');
 const http2 = require('http2').constants;
 const mongoose = require('mongoose');
-const { errors, celebrate, Joi } = require('celebrate');
-const { RegExp } = require('./utils/regex');
+const { errors } = require('celebrate');
 const { handleError } = require('./handles/handleError');
-const { userRouter, cardRouter } = require('./routes');
-const { createUser, login } = require('./controllers/users');
+const {
+  userRouter, cardRouter, signinRout, signupRout,
+} = require('./routes');
 const auth = require('./middlewares/auth');
 
 const mongooseUrl = 'mongodb://localhost:27017/mestodb';
@@ -20,21 +20,8 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email,
-    password: Joi.string().required(),
-  }),
-}), login);
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(RegExp),
-    email: Joi.string().required().email,
-    password: Joi.string().required(),
-  }),
-}), createUser);
+app.post('/signin', signinRout);
+app.post('/signup', signupRout);
 app.use(auth, userRouter);
 app.use(auth, cardRouter);
 
@@ -46,14 +33,14 @@ app.use('*', (req, res) => {
 app.use(errors);
 app.use(handleError);
 // eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({
-    message: statusCode === 500
-      ? 'На сервере произошла ошибка'
-      : message,
-  });
-});
+// app.use((err, req, res, next) => {
+//   const { statusCode = 500, message } = err;
+//   res.status(statusCode).send({
+//     message: statusCode === 500
+//       ? 'На сервере произошла ошибка'
+//       : message,
+//   });
+// });
 
 const { PORT = 3000 } = process.env;
 
