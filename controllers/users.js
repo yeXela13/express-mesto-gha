@@ -2,7 +2,6 @@ const http2 = require('http2').constants;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userSchema = require('../models/user');
-// const { handleError } = require('../handles/handleError');
 
 const getUsers = (req, res, next) => {
   userSchema.find()
@@ -44,13 +43,6 @@ const createUser = (req, res, next) => {
       });
     })
     .catch(next);
-  // if (err.name === 'ValidationError') {
-  //   const message = Object.values(err.errors).map((error) => error.message).join(';');
-  //   res.status(http2.HTTP_STATUS_BAD_REQUEST).send({ message });
-  // } else {
-  //   res.status(http2.HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Что-то пошло не так' });
-  // }
-  // });
 };
 
 const updateUser = (req, res, next) => {
@@ -82,7 +74,6 @@ const updateAvatar = (req, res, next) => {
 const login = (req, res, next) => {
   const { email, password } = req.body;
   return userSchema.findUserByCredentials(email, password)
-  // userSchema.findOne({ email }).select('+password')
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'super-secret-key', { expiresIn: '7d' });
       res.send({ token });

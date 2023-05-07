@@ -20,8 +20,6 @@ cardRouter.delete('/cards/:cardId', celebrate({
   params: Joi.object().keys({
     cardId: Joi.objectId().required(),
   }),
-  // headers: Joi.object().keys({
-  // }).unknown(true),
 }), deleteCard);
 
 cardRouter.put('/cards/:cardId/likes', celebrate({

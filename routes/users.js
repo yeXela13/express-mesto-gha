@@ -6,13 +6,6 @@ const {
 } = require('../controllers/users');
 const { RegExp } = require('../utils/regex');
 
-// userRouter.post('/', celebrate({
-//   body: Joi.object().keys({
-//     email: Joi.string().required().email,
-//     password: Joi.string().required(),
-//   }),
-// }), login);
-
 userRouter.get('/users/', getUsers);
 
 userRouter.get('/users/:userId', celebrate({
@@ -22,16 +15,6 @@ userRouter.get('/users/:userId', celebrate({
 }), getUser);
 
 userRouter.get('/users/me', getUserMyInfo);
-
-// userRouter.post('/users/', celebrate({
-//   body: Joi.object().keys({
-//     name: Joi.string().min(2).max(30),
-//     about: Joi.string().min(2).max(30),
-//     avatar: Joi.string().regex(RegExp),
-//     email: Joi.string().required().email,
-//     password: Joi.string().required(),
-//   }),
-// }), createUser);
 
 userRouter.patch('/users/me', celebrate({
   body: Joi.object().keys({
