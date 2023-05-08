@@ -26,8 +26,8 @@ app.post('/signup', signupRout);
 app.use(auth, userRouter);
 app.use(auth, cardRouter);
 
-app.use(handleError);
 app.use(errors);
+app.use(handleError);
 
 const { PORT = 3000 } = process.env;
 

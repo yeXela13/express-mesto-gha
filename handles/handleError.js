@@ -7,6 +7,11 @@ const { UnauthorizedError } = require('./UnauthorizedError');
 const { NotFoundError } = require('./NotFoundError');
 
 const handleError = ((err, req, res, next) => {
+  if (err.code === 11000) {
+    return res.status(http2.HTTP_STATUS_CONFLICT).send({
+      message: 'пользователь существует',
+    });
+  }
   if (err instanceof UnauthorizedError) {
     const message = err;
     return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message });
