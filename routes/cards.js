@@ -4,14 +4,14 @@ Joi.objectId = require('joi-objectid')(Joi);
 const {
   getCards, deleteCard, createCard, setLike, deleteLike,
 } = require('../controllers/cards');
-const { RegExp } = require('../utils/regex');
+const { urlRegExp } = require('../utils/regex');
 
 cardRouter.get('/cards/', getCards);
 
 cardRouter.post('/cards/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().regex(RegExp),
+    link: Joi.string().required().regex(urlRegExp),
     // owner: Joi.objectId().required(),
   }),
 }), createCard);

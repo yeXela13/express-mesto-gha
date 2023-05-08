@@ -1,5 +1,4 @@
 const express = require('express');
-const http2 = require('http2').constants;
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const { handleError } = require('./handles/handleError');
@@ -25,22 +24,8 @@ app.post('/signup', signupRout);
 app.use(auth, userRouter);
 app.use(auth, cardRouter);
 
-app.use('*', (req, res) => {
-  res.status(http2.HTTP_STATUS_NOT_FOUND).send({ message: 'страница не найдена' });
-});
-
-// здесь обрабатываем все ошибки
 app.use(handleError);
 app.use(errors);
-// eslint-disable-next-line no-unused-vars
-// app.use((err, req, res, next) => {
-//   const { statusCode = 500, message } = err;
-//   res.status(statusCode).send({
-//     message: statusCode === 500
-//       ? 'На сервере произошла ошибка'
-//       : message,
-//   });
-// });
 
 const { PORT = 3000 } = process.env;
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { RegExp } = require('../utils/regex');
+const { urlRegExp } = require('../utils/regex');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -12,7 +12,7 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Заполните это поле'],
     validate: {
-      validator: (link) => RegExp.test(link),
+      validator: (link) => urlRegExp.test(link),
       message: 'Некоректная адрес изображения',
     },
   },

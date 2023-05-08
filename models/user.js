@@ -3,28 +3,25 @@ const bcrypt = require('bcrypt');
 const isEmail = require('validator/lib/isEmail');
 const UnauthorizedError = require('../handles/UnauthorizedError');
 
-const { RegExp } = require('../utils/regex');
+const { urlRegExp } = require('../utils/regex');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Заполните это поле'],
     minlength: [2, 'Поле должно содержать более 2 символов'],
     maxlength: [30, 'Поле должно содержать более 2 символов'],
     default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    required: [true, 'Заполните это поле'],
     minlength: [2, 'Поле должно содержать более 2 символов'],
     maxlength: [30, 'Поле должно содержать более 2 символов'],
     default: 'Исследователь',
   },
   avatar: {
     type: String,
-    required: [true, 'Заполните это поле'],
     validate: {
-      validator: (avatar) => RegExp.test(avatar),
+      validator: (avatar) => urlRegExp.test(avatar),
       message: 'Некоректная адрес изображения',
     },
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
@@ -43,7 +40,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Заполните это поле'],
     select: false,
   },
-});
+}, { toJSON: { useProjection: true }, toObject: { useProjection: true } });
 
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')

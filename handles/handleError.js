@@ -7,6 +7,9 @@ const { UnauthorizedError } = require('./UnauthorizedError');
 const { NotFoundError } = require('./NotFoundError');
 
 const handleError = ((err, req, res, next) => {
+  if ('*') {
+    res.status(http2.HTTP_STATUS_NOT_FOUND).send({ message: 'страница не найдена' });
+  }
   if (err instanceof UnauthorizedError) {
     const message = err;
     return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message });

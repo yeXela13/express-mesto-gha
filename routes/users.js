@@ -4,7 +4,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 const {
   getUsers, getUser, updateUser, updateAvatar, getUserMyInfo,
 } = require('../controllers/users');
-const { RegExp } = require('../utils/regex');
+const { urlRegExp } = require('../utils/regex');
 
 userRouter.get('/users/', getUsers);
 
@@ -25,7 +25,7 @@ userRouter.patch('/users/me', celebrate({
 
 userRouter.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().regex(RegExp),
+    avatar: Joi.string().required().regex(urlRegExp),
   }),
 }), updateAvatar);
 

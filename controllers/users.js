@@ -77,17 +77,13 @@ const login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'super-secret-key', { expiresIn: '7d' });
       res.send({ token });
-      if (!user) {
-        return Promise.reject(new Error('Неправильные почта или пароль'));
-      }
-      return bcrypt.compare(password, user.password);
     })
-    // eslint-disable-next-line consistent-return
     .then((matched) => {
       if (!matched) {
         return Promise.reject(new Error('Неправильные почта или пароль'));
       }
       res.send({ message: 'Всё верно!' });
+      return next();
     })
     .catch(next);
 };
