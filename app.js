@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const bodyParser = require('body-parser');
 const { handleError } = require('./handles/handleError');
 const {
   userRouter, cardRouter, signinRout, signupRout,
@@ -18,6 +19,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb')
 const app = express();
 
 app.use(express.json());
+app.use(bodyParser.json());
 
 app.post('/signin', signinRout);
 app.post('/signup', signupRout);
