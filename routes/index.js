@@ -4,8 +4,8 @@ const signinRout = require('./signinRout');
 const signupRout = require('./signupRout');
 
 module.exports = {
-  userRouter,
-  cardRouter,
   signinRout,
   signupRout,
+  userRouter,
+  cardRouter,
 };
