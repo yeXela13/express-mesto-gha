@@ -25,12 +25,12 @@ const getUserMyInfo = (req, res, next) => {
     .catch(next);
 };
 
-const createUser = (req, res, next) => {
+const createUser = async (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-  const hash = bcrypt.hash(password, 10);
-  userSchema.create({
+  const hash = await bcrypt.hash(password, 10);
+  await userSchema.create({
     name,
     about,
     avatar,
