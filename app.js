@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const auth = require('./middlewares/auth');
 const { handleError } = require('./handles/handleError');
 const {
-  userRouter, cardRouter, signinRout, signupRout,
+  signinRout, signupRout, userRouter, cardRouter,
 } = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -23,6 +23,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use(requestLogger);
+
 app.post('/signin', signinRout);
 app.post('/signup', signupRout);
 app.use(auth, userRouter);
