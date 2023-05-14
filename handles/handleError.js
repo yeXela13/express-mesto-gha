@@ -13,16 +13,16 @@ const handleError = ((err, req, res, next) => {
     });
   }
   if (err instanceof UnauthorizedError) {
-    const message = Object.values(err.errors).map((error) => error.message).join(';');
-    return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message });
+    // const message = err;
+    return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message: err.message });
   }
   if (err instanceof ForbiddenError) {
-    const message = err;
-    return res.status(http2.HTTP_STATUS_FORBIDDEN).send({ message });
+    // const message = err;
+    return res.status(http2.HTTP_STATUS_FORBIDDEN).send({ message: err.message });
   }
   if (err instanceof NotFoundError) {
-    const message = err;
-    return res.status(http2.HTTP_STATUS_NOT_FOUND).send({ message });
+    // const message = err;
+    return res.status(http2.HTTP_STATUS_NOT_FOUND).send({ message: err.message });
   }
   if (err instanceof ValidationError) {
     const message = Object.values(err.errors).map((error) => error.message).join(';');
