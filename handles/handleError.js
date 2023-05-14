@@ -13,7 +13,7 @@ const handleError = ((err, req, res, next) => {
     });
   }
   if (err instanceof UnauthorizedError) {
-    const message = err;
+    const message = Object.values(err.errors).map((error) => error.message).join(';');
     return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message });
   }
   if (err instanceof ForbiddenError) {
