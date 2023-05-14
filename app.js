@@ -24,8 +24,8 @@ app.use(bodyParser.json());
 
 app.use(requestLogger);
 
-app.post('/signin', signinRout);
-app.post('/signup', signupRout);
+app.use('/signin', signinRout);
+app.use('/signup', signupRout);
 app.use(auth, userRouter);
 app.use(auth, cardRouter);
 
