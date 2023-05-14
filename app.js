@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const bodyParser = require('body-parser');
 const auth = require('./middlewares/auth');
-const { handleError } = require('./handles/handleError');
 const {
   signinRout, signupRout, userRouter, cardRouter,
 } = require('./routes');
+const { handleError } = require('./handles/handleError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const mongooseUrl = 'mongodb://localhost:27017/mestodb';
@@ -31,8 +31,8 @@ app.use(auth, cardRouter);
 
 app.use(errorLogger);
 
-app.use(handleError);
 app.use(errors);
+app.use(handleError);
 
 const { PORT = 3000 } = process.env;
 
