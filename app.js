@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const validationErrors = require('celebrate').errors;
 const bodyParser = require('body-parser');
 const auth = require('./middlewares/auth');
 const {
@@ -32,7 +31,6 @@ app.use(auth, cardRouter);
 
 app.use(errorLogger);
 
-app.use(validationErrors);
 app.use(errors);
 app.use(handleError);
 
