@@ -19,9 +19,8 @@ const getUser = (req, res, next) => {
 };
 
 const getUserMyInfo = (req, res, next) => {
-  userSchema.findById(req.params.userId)
-    .orFail()
-    .then((user) => res.status(http2.HTTP_STATUS_OK).send(user))
+  const id = req.user._id;
+  getUser(req, res, id, next)
     .catch(next);
 };
 
@@ -53,7 +52,7 @@ const updateUser = (req, res, next) => {
     { new: true, runValidators: true },
   )
     .then((user) => {
-      res.status(http2.HTTP_STATUS_OK).send({ data: user });
+      res.status(http2.HTTP_STATUS_OK).send({ user });
     })
     .catch(next);
 };
@@ -66,7 +65,7 @@ const updateAvatar = (req, res, next) => {
     { new: true, runValidators: true },
   )
     .then((user) => {
-      res.status(http2.HTTP_STATUS_OK).send({ data: user });
+      res.status(http2.HTTP_STATUS_OK).send({ user });
     })
     .catch(next);
 };

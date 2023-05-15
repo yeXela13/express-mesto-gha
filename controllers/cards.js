@@ -12,14 +12,14 @@ const getCards = (req, res, next) => {
 };
 
 const createCard = (req, res, next) => {
+  const id = req.user._id;
   const { name, link } = req.body;
-  const owner = req.user._id;
-  cardSchema.create({ name, link, owner })
+  cardSchema.create({ name, link, owner: id })
     .then((card) => {
       card.populate('owner');
     })
     .then((card) => {
-      res.status(http2.HTTP_STATUS_CREATED).send({ data: card });
+      res.status(http2.HTTP_STATUS_CREATED).send({ card });
     })
     .catch(next);
 };
@@ -28,27 +28,28 @@ const deleteCard = (req, res, next) => {
   cardSchema.findById(req.params.cardId)
     .orFail()
     .then((card) => {
-      cardSchema.deleteOne({ _id: card._id, owner: req.user._id })
-        .then((result) => {
-          if (result.deletedCount === 0) {
-            throw new ForbiddenError('невозможно удалить не свою карточку');
-          } else {
-            res.status(http2.HTTP_STATUS_OK).send({ data: card });
-          }
-        })
-        .catch(next);
-    });
+      const owner = card.owner.toString();
+      if (req.user._id === owner) {
+        card.deleteOne()
+          .then(() => res.send({ message: 'Карточка удалена' }))
+          .catch(next);
+      } else {
+        next(new ForbiddenError('Нельзя удалять карточки других пользователей'));
+      }
+    })
+    .catch(next);
 };
 
 const setLike = (req, res, next) => {
   cardSchema.findByIdAndUpdate(
     req.params.cardId,
-    { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+    { $addToSet: { likes: req.user._id } },
     { new: true },
   )
     .orFail()
+    .populate(['owner', 'likes'])
     .then((card) => {
-      res.status(http2.HTTP_STATUS_OK).send({ data: card });
+      res.status(http2.HTTP_STATUS_OK).send({ card });
     })
     .catch(next);
 };
@@ -56,12 +57,13 @@ const setLike = (req, res, next) => {
 const deleteLike = (req, res, next) => {
   cardSchema.findByIdAndUpdate(
     req.params.cardId,
-    { $pull: { likes: req.user._id } }, // убрать _id из массива
+    { $pull: { likes: req.user._id } },
     { new: true },
   )
     .orFail()
+    .populate(['owner', 'likes'])
     .then((card) => {
-      res.status(http2.HTTP_STATUS_OK).send({ data: card });
+      res.status(http2.HTTP_STATUS_OK).send({ card });
     })
     .catch(next);
 };
