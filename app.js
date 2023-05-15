@@ -32,8 +32,8 @@ app.use(auth, cardRouter);
 
 app.use(errorLogger);
 
-app.use(errors);
 app.use(validationErrors);
+app.use(errors);
 app.use(handleError);
 
 const { PORT = 3000 } = process.env;
