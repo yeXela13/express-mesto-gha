@@ -1,5 +1,5 @@
 const http2 = require('http2').constants;
-const validationErrors = require('celebrate').errors;
+// const validationErrors = require('celebrate').errors;
 const {
   DocumentNotFoundError, CastError, ValidationError,
 } = require('mongoose').Error;
@@ -13,10 +13,10 @@ const handleError = ((err, req, res, next) => {
       message: 'пользователь существует',
     });
   }
-  if (err instanceof validationErrors) {
-    const message = Object.values(err.errors).map((error) => error.message).join(';');
-    return res.status(http2.HTTP_STATUS_BAD_REQUEST).send({ message });
-  }
+  // if (validationErrors) {
+  //   const message = Object.values(err.errors).map((error) => error.message).join(';');
+  //   return res.status(http2.HTTP_STATUS_BAD_REQUEST).send({ message });
+  // }
   if (err instanceof UnauthorizedError) {
     // const message = err;
     return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message: err.message });
