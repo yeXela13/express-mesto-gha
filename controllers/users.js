@@ -44,31 +44,51 @@ const createUser = async (req, res, next) => {
     .catch(next);
 };
 
-const updateUser = (req, res, next) => {
+const updateInfo = (req, res, updateData, next) => {
   const id = req.user._id;
-  userSchema.findByIdAndUpdate(
-    id,
-    { name: req.name, about: req.about },
-    { new: true, runValidators: true },
-  )
-    .then((user) => {
-      res.status(http2.HTTP_STATUS_OK).send({ user });
-    })
+  userSchema.findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
+    .orFail()
+    .then((user) => res.send({ user }))
     .catch(next);
 };
 
-const updateAvatar = (req, res, next) => {
-  const id = req.user._id;
-  userSchema.findByIdAndUpdate(
-    id,
-    { avatar: req.body.avatar },
-    { new: true, runValidators: true },
-  )
-    .then((user) => {
-      res.status(http2.HTTP_STATUS_OK).send({ user });
-    })
-    .catch(next);
+// PATCH /users/me — обновляет профиль
+const updateUser = (req, res, next) => {
+  const userData = req.body;
+  updateInfo(req, res, userData, next);
 };
+
+// PATCH /users/me/avatar — обновляет аватар
+const updateAvatar = (req, res, next) => {
+  const updatedAvatar = req.body;
+  updateInfo(req, res, updatedAvatar, next);
+};
+
+// const updateUser = (req, res, next) => {
+//   const id = req.user._id;
+//   userSchema.findByIdAndUpdate(
+//     id,
+//     { name: req.name, about: req.about },
+//     { new: true, runValidators: true },
+//   )
+//     .then((user) => {
+//       res.status(http2.HTTP_STATUS_OK).send({ user });
+//     })
+//     .catch(next);
+// };
+
+// const updateAvatar = (req, res, next) => {
+//   const id = req.user._id;
+//   userSchema.findByIdAndUpdate(
+//     id,
+//     { avatar: req.body.avatar },
+//     { new: true, runValidators: true },
+//   )
+//     .then((user) => {
+//       res.status(http2.HTTP_STATUS_OK).send({ user });
+//     })
+//     .catch(next);
+// };
 
 const login = (req, res, next) => {
   const { email, password } = req.body;

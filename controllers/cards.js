@@ -15,9 +15,9 @@ const createCard = (req, res, next) => {
   const id = req.user._id;
   const { name, link } = req.body;
   cardSchema.create({ name, link, owner: id })
-    .then((card) => {
-      card.populate('owner');
-    })
+    // .then((card) => {
+    //   card.populate('owner');
+    // })
     .then((card) => {
       res.status(http2.HTTP_STATUS_CREATED).send({ card });
     })
