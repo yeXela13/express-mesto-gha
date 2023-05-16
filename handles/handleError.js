@@ -12,17 +12,13 @@ const handleError = ((err, req, res, next) => {
       message: 'пользователь существует',
     });
   }
-
   if (err instanceof UnauthorizedError) {
-    // const message = err;
     return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message: err.message });
   }
   if (err instanceof ForbiddenError) {
-    // const message = err;
     return res.status(http2.HTTP_STATUS_FORBIDDEN).send({ message: err.message });
   }
   if (err instanceof NotFoundError) {
-    // const message = err;
     return res.status(http2.HTTP_STATUS_NOT_FOUND).send({ message: err.message });
   }
   if (err instanceof ValidationError) {
