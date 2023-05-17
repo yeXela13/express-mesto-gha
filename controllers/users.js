@@ -2,6 +2,7 @@ const http2 = require('http2').constants;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userSchema = require('../models/user');
+const NotFoundError = require('../handles/NotFoundError');
 
 const getUsers = (req, res, next) => {
   userSchema.find({})
@@ -10,7 +11,7 @@ const getUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  const id = req.user._id;
+  const id = req.params.userId;
   userSchema.findById(id)
     .orFail()
     .then((user) => res.send({ user }))
@@ -18,10 +19,14 @@ const getUser = (req, res, next) => {
 };
 
 const getUserMyInfo = (req, res, next) => {
-  const id = req.user._id;
-  userSchema.findById(id)
-    .orFail()
-    .then((user) => res.send({ user }))
+  const { userId } = req.params;
+  userSchema.findById(userId)
+    .orFail(() => {
+      throw new NotFoundError('Такого пользователя не существует');
+    })
+    .then((user) => {
+      res.status(http2.HTTP_STATUS_OK).send({ user });
+    })
     .catch(next);
 };
 
