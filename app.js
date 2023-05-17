@@ -8,7 +8,7 @@ const {
   signinRout, signupRout, userRouter, cardRouter,
 } = require('./routes');
 const { handleError } = require('./handles/handleError');
-const NotFoundError = require('./handles/NotFoundError');
+// const NotFoundError = require('./handles/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const mongooseUrl = 'mongodb://localhost:27017/mestodb';
@@ -30,9 +30,9 @@ app.use('/signin', signinRout);
 app.use('/signup', signupRout);
 app.use(auth, userRouter);
 app.use(auth, cardRouter);
-app.use('*', (req, res, next) => {
-  next(new NotFoundError('Страница не найдена'));
-});
+// app.use('*', (req, res, next) => {
+//   next(new NotFoundError('Страница не найдена'));
+// });
 app.use(errorLogger);
 
 app.use(validationErrors());
