@@ -6,24 +6,24 @@ const {
 } = require('../controllers/users');
 const { urlRegExp } = require('../utils/regex');
 
-userRouter.get('/', getUsers);
+userRouter.get('/users/', getUsers);
 
-userRouter.get('/:userId', celebrate({
+userRouter.get('/users/:userId', celebrate({
   params: Joi.object().keys({
     userId: Joi.objectId().required(),
   }),
 }), getUser);
 
-userRouter.get('/me', getUserMyInfo);
+userRouter.get('/users/me', getUserMyInfo);
 
-userRouter.patch('/me', celebrate({
+userRouter.patch('/users/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
   }),
 }), updateUser);
 
-userRouter.patch('/me/avatar', celebrate({
+userRouter.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().required().regex(urlRegExp),
   }),

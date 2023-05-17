@@ -7,8 +7,8 @@ const auth = require('./middlewares/auth');
 const {
   signinRout, signupRout, userRouter, cardRouter,
 } = require('./routes');
-const NotFoundError = require('./handles/NotFoundError');
 const { handleError } = require('./handles/handleError');
+const NotFoundError = require('./handles/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const mongooseUrl = 'mongodb://localhost:27017/mestodb';

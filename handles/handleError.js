@@ -7,11 +7,6 @@ const { UnauthorizedError } = require('./UnauthorizedError');
 const { NotFoundError } = require('./NotFoundError');
 
 const handleError = ((err, req, res, next) => {
-  if (err.code === 11000) {
-    return res.status(http2.HTTP_STATUS_CONFLICT).send({
-      message: 'пользователь существует',
-    });
-  }
   if (err instanceof UnauthorizedError) {
     return res.status(http2.HTTP_STATUS_UNAUTHORIZED).send({ message: err.message });
   }
@@ -35,6 +30,11 @@ const handleError = ((err, req, res, next) => {
   if (err instanceof CastError) {
     return res.status(http2.HTTP_STATUS_BAD_REQUEST).send({
       message: `Передан несуществующий _id: ${err.value}`,
+    });
+  }
+  if (err.code === 11000) {
+    return res.status(http2.HTTP_STATUS_CONFLICT).send({
+      message: 'пользователь существует',
     });
   }
   res.status(http2.HTTP_STATUS_INTERNAL_SERVER_ERROR).send({
