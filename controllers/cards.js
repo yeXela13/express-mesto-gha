@@ -1,6 +1,6 @@
 const http2 = require('http2').constants;
 const cardSchema = require('../models/card');
-const ForbiddenError = require('../handles/ForbiddenError');
+const { ForbiddenError } = require('../handles/ForbiddenError');
 
 const getCards = (req, res, next) => {
   cardSchema.find()
