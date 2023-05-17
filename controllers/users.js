@@ -11,10 +11,10 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-const getUser = (req, res, next) => {
-  userSchema.findById(req.params.userId)
+const getUser = (req, res, id, next) => {
+  userSchema.findById(id)
     .orFail()
-    .then((user) => res.status(http2.HTTP_STATUS_OK).send(user))
+    .then((user) => res.send({ user }))
     .catch(next);
 };
 

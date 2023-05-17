@@ -3,13 +3,8 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const validationErrors = require('celebrate').errors;
 const bodyParser = require('body-parser');
-// const auth = require('./middlewares/auth');
-// const {
-//   signinRout, signupRout, userRouter, cardRouter,
-// } = require('./routes');
 const router = require('./routes/index');
 const { handleError } = require('./handles/handleError');
-// const NotFoundError = require('./handles/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const mongooseUrl = 'mongodb://localhost:27017/mestodb';
@@ -28,13 +23,7 @@ app.use(bodyParser.json());
 app.use(requestLogger);
 
 app.use(router);
-// app.use('/signin', signinRout);
-// app.use('/signup', signupRout);
-// app.use(auth, userRouter);
-// app.use(auth, cardRouter);
-// app.use('*', (req, res, next) => {
-//   next(new NotFoundError('Страница не найдена'));
-// });
+
 app.use(errorLogger);
 
 app.use(validationErrors());
