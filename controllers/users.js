@@ -10,24 +10,23 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-const getUser = (req, res, next) => {
-  const id = req.params.userId;
-  userSchema.findById(id)
-    .orFail()
-    .then((user) => res.send({ user }))
-    .catch(next);
-};
-
 const getUserMyInfo = (req, res, next) => {
-  const { userId } = req.params;
-
-  userSchema.findById(userId)
+  const id = req.user._id;
+  userSchema.findById(id)
     .orFail(() => {
       throw new NotFoundError('Такого пользователя не существует');
     })
-    .then((user) => {
-      res.status(http2.HTTP_STATUS_OK).send({ user });
+    .then((user) => res.status(http2.HTTP_STATUS_OK).send({ user }))
+    .catch(next);
+};
+
+const getUser = (req, res, next) => {
+  const id = req.params.userId;
+  userSchema.findById(id)
+    .orFail(() => {
+      throw new NotFoundError('Такого пользователя не существует');
     })
+    .then((user) => res.status(http2.HTTP_STATUS_OK).send({ user }))
     .catch(next);
 };
 
