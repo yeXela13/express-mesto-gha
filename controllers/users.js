@@ -20,6 +20,7 @@ const getUser = (req, res, next) => {
 
 const getUserMyInfo = (req, res, next) => {
   const { userId } = req.params;
+
   userSchema.findById(userId)
     .orFail(() => {
       throw new NotFoundError('Такого пользователя не существует');
