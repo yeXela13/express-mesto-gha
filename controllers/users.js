@@ -9,20 +9,21 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-const getUser = (req, res, next) => {
-  const id = req.params.userId;
+const findIdUser = (req, res, id, next) => {
   userSchema.findById(id)
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch(next);
 };
 
+const getUser = (req, res, next) => {
+  const id = req.params.userId;
+  findIdUser(req, res, id, next);
+};
+
 const getUserMyInfo = (req, res, next) => {
   const id = req.user._id;
-  userSchema.findById(id)
-    .orFail()
-    .then((user) => res.send({ data: user }))
-    .catch(next);
+  findIdUser(req, res, id, next);
 };
 
 const createUser = async (req, res, next) => {
