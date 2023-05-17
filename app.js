@@ -33,7 +33,7 @@ app.use(validationErrors());
 app.use(errors);
 app.use(handleError);
 
-const { PORT = 3005 } = process.env;
+const { PORT = 3000 } = process.env;
 
 app.listen((PORT), () => {
   console.log(`Server started on port ${PORT}`);
