@@ -2,9 +2,9 @@ const http2 = require('http2').constants;
 const {
   DocumentNotFoundError, CastError, ValidationError,
 } = require('mongoose').Error;
-const { ForbiddenError } = require('./ForbiddenError');
-const { UnauthorizedError } = require('./UnauthorizedError');
-const { NotFoundError } = require('./NotFoundError');
+const ForbiddenError = require('./ForbiddenError');
+const UnauthorizedError = require('./UnauthorizedError');
+const NotFoundError = require('./NotFoundError');
 
 const handleError = ((err, req, res, next) => {
   if (err instanceof UnauthorizedError) {
