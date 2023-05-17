@@ -4,23 +4,24 @@ const jwt = require('jsonwebtoken');
 const userSchema = require('../models/user');
 
 const getUsers = (req, res, next) => {
-  userSchema.find()
-    .then((user) => {
-      res.status(http2.HTTP_STATUS_OK).send({ user });
-    })
+  userSchema.find({})
+    .then((users) => res.send(users))
     .catch(next);
 };
 
-const getUser = (req, res, id, next) => {
+const getUser = (req, res, next) => {
+  const id = req.params.userId;
   userSchema.findById(id)
     .orFail()
-    .then((user) => res.send({ user }))
+    .then((user) => res.send({ data: user }))
     .catch(next);
 };
 
 const getUserMyInfo = (req, res, next) => {
   const id = req.user._id;
-  getUser(req, res, id, next)
+  userSchema.findById(id)
+    .orFail()
+    .then((user) => res.send({ data: user }))
     .catch(next);
 };
 
